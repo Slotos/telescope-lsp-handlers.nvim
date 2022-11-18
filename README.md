@@ -15,7 +15,7 @@ An extension for Telescope that registers handlers for
 
 ## Why
 
-Telescope's built-in LSP functions do not push items to the tagstack when picked manually, these handlers do.
+Telescope's built-in LSP functions do not push items to the tagstack when picked manually, these handlers don't interfere with that process.
 
 ## How
 
@@ -79,11 +79,40 @@ require'telescope-lsp-handlers'.setup({
 ```
 Note: setup can be performed multiple times, each new call will simply replace old handlers.
 
+#### Keys explanation
+
+- `disabled` indicates whether to disable a specific handler
+- `no_results_message` provides a message emitted when no results had been found
+- `picker` is an options table for telescope's `Picker:new` to be merged with this plugn defaults
+  - `picker.entry` is a key that can be used to configure entry maker specifically (see `:h telescope.builtin.quickfix`), is removed before passing options to telescope
+
 #### Applying themes to specific handler
 ```lua
 require'telescope-lsp-handlers'.setup({
   reference = {
     picker = require('telescope.themes').get_dropdown({}), -- get_dropdown generates a table, which gets merged with plugin defaults
+  },
+}
+```
+
+#### Changing entry display
+```lua
+require'telescope-lsp-handlers'.setup({
+  reference = {
+    entry = {
+      show_line = false, -- don't show matched code in picker list
+    }
+  },
+}
+```
+
+```lua
+require'telescope-lsp-handlers'.setup({
+  reference = {
+    entry = {
+      trim_text = true, -- trim surrounding spaces from matched code
+      fname_width = 50, -- increase space dedicated to filename to 50 from default 30
+    }
   },
 }
 ```

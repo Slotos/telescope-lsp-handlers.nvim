@@ -10,14 +10,16 @@ local M = {}
 
 local function find(items, opts)
   local picker_opts = (opts or {}).picker or {}
+  local entry_opts = picker_opts.entry or {}
+  picker_opts.entry = nil
 
   pickers.new(picker_opts, {
     finder = finders.new_table({
       results = items,
-      entry_maker = make_entry.gen_from_quickfix(),
+      entry_maker = make_entry.gen_from_quickfix(entry_opts),
     }),
-    previewer = conf.qflist_previewer(picker_opts),
-    sorter = conf.generic_sorter(opts),
+    previewer = conf.qflist_previewer({}),
+    sorter = conf.generic_sorter({}),
   }):find()
 end
 
